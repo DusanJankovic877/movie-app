@@ -1,15 +1,18 @@
 <template>
   <div id="app">
     <navbar/>
+    <movie-search />
     <router-view/>
   </div>
 </template>
 <script>
 import Navbar from '../src/components/Navbar'
+import MovieSearch from '../src/components/MovieSearch'
 export default {
   
   components: {
-    Navbar
+    Navbar,
+    MovieSearch
   }
 }
 </script>

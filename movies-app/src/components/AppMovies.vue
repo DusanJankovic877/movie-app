@@ -23,6 +23,7 @@
 import { store } from '../store/index'
 import {mapGetters} from 'vuex'
 import MovieRow from './MovieRow'
+
 export default {
   name: 'AppMovies',
   components:{
