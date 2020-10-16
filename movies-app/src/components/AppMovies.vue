@@ -1,13 +1,14 @@
 <template>
-  <div class="movies">
-    <h1>movies</h1>
+  <div class="hello">
+    <h1>jo</h1>
+  
   </div>
-
 </template>
 
 <script>
 export default {
-  name: 'AppMovies'
+  name: 'AppMovies',
+
 }
 </script>
 
