@@ -1,36 +1,35 @@
 <template>
   <div class="hello">
     <h1>Movies</h1>
-          <div>
-        <button @click="setSortingCriteria('title')">Sort by title</button>
-        <button @click="setSortingCriteria('duration')">Sort by duration</button>
-      </div>
       <div>
-        <button @click="setSortingDirection(-1)">ASC</button>
-        <button @click="setSortingDirection(1)">DESC</button>
+        <button class="btn btn-primary" @click="setSortingCriteria('title')">Sort by title</button>&nbsp;
+        <button class="btn btn-primary" @click="setSortingCriteria('duration')">Sort by duration</button>
       </div>
-<div v-if="filteredMovies.length">
-  <table>
-    <tr>
-      <th>Title</th>
-      <th>Director</th>
-      <th>Release Date</th>
-      <th>Genre</th>
-      <th>Duration</th>
-      <th>Image</th>
-      <th></th>
-    </tr>
-    
-      <movie-row 
-        v-for="movie in sortAsc" :key="movie.id" 
-        :movie="movie" 
-        :isSelected="getIsMoviesSelected(movie)" 
-        @movie-selected="handleMovieSelected"/>
-    
+      <br>
+      <div>
+        <button class="btn btn-primary" @click="setSortingDirection(-1)">ASC</button>&nbsp;
+        <button class="btn btn-primary" @click="setSortingDirection(1)">DESC</button>
+      </div>
+  <div v-if="filteredMovies.length">
+    <table>
+      <tr>
+        <th>Title</th>
+        <th>Director</th>
+        <th>Release Date</th>
+        <th>Genre</th>
+        <th>Duration</th>
+        <th>Image</th>
+        <th></th>
+      </tr>
+      
+        <movie-row 
+          v-for="movie in moviesPage" :key="movie.id" 
+          :movie="movie" 
+          :isSelected="getIsMoviesSelected(movie)" 
+          @movie-selected="handleMovieSelected"/>
+    </table>
 
-  </table>
-
-</div>
+  </div>
   <div v-else>
     <p style="color: white; background-color:red">there is no movies for current input</p>
   </div>
@@ -39,8 +38,9 @@
       <button class="btn btn-danger" @click="deselectAll">Deselect all</button>
 
       <p>number of selected movies {{countSelectedMovies}}</p>
-      {{}}
+  
     </div>
+    <pagination :num-of-items="sortAsc.length" @current-page-changed="goToPage"/>
   </div>
 </template>
 
@@ -48,40 +48,42 @@
 import { store } from '../store/index';
 import {mapGetters} from 'vuex';
 import MovieRow from './MovieRow';
+import Pagination from './Pagination';
+  const PAGE_SIZE = 5;
 
 export default {
+
   name: 'AppMovies',
   data(){
     return {
       selectedMovies: [],
       sortinCriteria: 'title',
-      sortDirection: -1
+      sortDirection: -1,
+      currentPage: 1,
     }
   },
   
   components:{
-    MovieRow
+    MovieRow,
+    Pagination
+
   },
   computed: {
     ...mapGetters(['movies', 'filteredMovies']),
     countSelectedMovies(){
       return this.selectedMovies.length;
     },
-        sortAsc(){
-   
-        return this.filteredMovies.map((m) => m).sort((movieA, movieB) => movieA[this.sortinCriteria] < movieB[this.sortinCriteria]
-                ? this.sortDirection
-            : -1 * this.sortDirection)
-
+    sortAsc(){
+    return this.filteredMovies.map((m) => m).sort((movieA, movieB) => movieA[this.sortinCriteria] < movieB[this.sortinCriteria]
+            ? this.sortDirection
+        : -1 * this.sortDirection)
     },
-    // sortedFilteredMovies() {
-    //   return this.filteredMovies
-    //     .map((m) => m)
-    //     .sort((movieA, movieB) =>
-    //       movieA[this.sortingCriteria] < movieB[this.sortingCriteria]
-    //         ? this.sortDirection
-    //         : -1 * this.sortDirection
-    //     );   } 
+    moviesPage() {
+      return this.sortAsc.slice(
+        (this.currentPage - 1) * PAGE_SIZE,
+        this.currentPage * PAGE_SIZE
+      );
+    }
   },
   methods: {
     handleMovieSelected(movie){
@@ -92,32 +94,31 @@ export default {
     },
     getIsMoviesSelected(movie){
       return !!this.selectedMovies.find((m) => m.id == movie.id);
-      // console.log(this.selectedMovies.length);
+    
     },
     selectAll(){
-        this.selectedMovies = [...this.filteredMovies]
+        this.selectedMovies = this.filteredMovies
     },
     deselectAll(){
       this.selectedMovies = []
     },
 
-        setSortingCriteria(field) {
+    setSortingCriteria(field) {
       this.sortinCriteria = field;
     },
-       setSortingDirection(direction) {
+    setSortingDirection(direction) {
       this.sortDirection = direction;
     },
-  
+    goToPage(page){
+      this.currentPage = page;
+    }
   },
     beforeRouteEnter(to, from, next){
-        //4ti vuex korak
-        // console.log('dispatch action')
         store.dispatch('fetchMovies').then(()=> {
             next();
         })
         
     }
-
 
 }
 </script>
