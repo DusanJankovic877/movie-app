@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>Movies</h1>
-
+<div v-if="filteredMovies.length">
   <table>
     <tr>
       <th>Title</th>
@@ -11,11 +11,16 @@
       <th>Duration</th>
       <th>Image</th>
     </tr>
-      <movie-row v-for="movie in movies" :key="movie.id" :movie="movie"/>
+    
+      <movie-row v-for="movie in filteredMovies" :key="movie.id" :movie="movie"/>
+    
+
   </table>
-<div class="row">
-  <!-- <movie-card v-for="movie in movies" :key="movie.id" :movie="movie"/> -->
 </div>
+  <div v-else>
+    <p style="color: white; background-color:red">there is no movies for current input</p>
+  </div>
+
   </div>
 </template>
 
@@ -26,11 +31,12 @@ import MovieRow from './MovieRow'
 
 export default {
   name: 'AppMovies',
+  
   components:{
     MovieRow
   },
   computed: {
-    ...mapGetters(['movies'])
+    ...mapGetters(['movies', 'filteredMovies'])
   },
     beforeRouteEnter(to, from, next){
         //4ti vuex korak
