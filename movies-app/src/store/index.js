@@ -7,7 +7,8 @@ export const store = new Vuex.Store({
   state: {
     movies: [],
     searchTerm: '',
-    filteredMovies: []
+    filteredMovies: [],
+    
   },
   mutations: {
     setMovies(state, payload){
