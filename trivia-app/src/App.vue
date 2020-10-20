@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <nav class="navbar">
-      <router-link class="navbar-brand" to="/">TriviaApp</router-link> |
-      <!-- <router-link to="/about">About</router-link> -->
+      <router-link class="navbar-brand" to="/">TriviaApp</router-link>
+      <router-link to="/chuck">Chuck</router-link>
     </nav>
     <router-view/>
   </div>

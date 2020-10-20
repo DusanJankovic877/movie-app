@@ -1,14 +1,22 @@
 <template>
   <div class="TriviaApp">
     <h1>TriviaApp</h1>
+
+    
   </div>
 </template>
 
 <script>
+// import chuckService from '../services/ChuckService'
+
 export default {
   name: 'TriviaApp',
-  props: {
-    msg: String
+
+  computed: {
+  
+  },
+  created(){
+
   }
 }
 </script>
