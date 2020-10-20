@@ -21,23 +21,41 @@ export default new Vuex.Store({
     ChuckStoreModule: {
       namespaced: true,
       state: {
-        randomJoke: {}
+        randomJoke: {},
+        categories: {},
+        category: ''
+        
       },
       mutations: {
         setRandomJoke(state, payload){
           state.randomJoke = payload;
-        }
+        },
+        setCategories(state, payload){
+          state.categoriers = payload;
+        
+        },
+
       },
       actions:{
         async fetchRandomJoke(state){
           const randomJoke = await chuckService.getRandomJoke();
           state.commit('setRandomJoke', randomJoke); //lokalni state
           // rootState.commit('chuckSetRandomJoke'); //prebacivanje u drugi modul
-      
+        },
+        async fetchCategories (state){
+          const categoriers = await chuckService.getRandomJoke();
+          state.commit('setCategories', categoriers);
+        },
+        fetchCategory(state){
+          this.category = chuckService.category
+          console.log(this.category, state);
         }
+        
       },
       getters:{
-        randomJoke: (state) => state.randomJoke
+        randomJoke: (state) => state.randomJoke,
+        categoriers: (state) => state.categoriers,
+        category:(state) => state.category
       }
     }
 
